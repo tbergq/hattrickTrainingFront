@@ -24,6 +24,10 @@ class UserStore {
 
   @computed
   get tokenData() {
+    if (!this.token) {
+      return {};
+    }
+
     let decoded = jwtDecode(this.token);
     decoded.expireTime = new Date(decoded.exp * 1000);
     return decoded;

@@ -31,7 +31,7 @@ class Header extends React.Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav>
+          <Nav style={{display: 'none'}}>
             <NavItem eventKey={1} href="#">Link</NavItem>
             <NavItem eventKey={2} href="#">Link</NavItem>
             <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
@@ -43,6 +43,7 @@ class Header extends React.Component {
             </NavDropdown>
           </Nav>
           <Nav pullRight>
+            <NavItem>Hello {this.props.username}</NavItem>
             <LinkContainer to={{pathname: '/', query: {logout:true}}}>
               <NavItem eventKey={1}>Log out</NavItem>
             </LinkContainer>

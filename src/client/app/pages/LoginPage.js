@@ -65,12 +65,11 @@ class LoginPage extends React.Component {
         },
         method: 'POST'
       });
+
       UserStore.setToken(token.token);
-      console.log('tokenData', UserStore.tokenData);
       browserHistory.push('home');
     }
     catch (error) {
-      console.log('error login', error);
       ToastStore.addToastMessage('Wrong username or password');
     }
   }
