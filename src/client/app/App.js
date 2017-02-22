@@ -6,6 +6,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'script!whatwg-fetch';
 import './app-wide-styles.css';
 import './app.scss';
+import 'animate.css/animate.css';
 
 
 

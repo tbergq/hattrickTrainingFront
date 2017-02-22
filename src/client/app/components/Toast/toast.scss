@@ -1,0 +1,14 @@
+.toast {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: rgba(0,0,0,0.5);
+  color: #ffffff;
+  padding: 20px;
+  min-width: 300px;
+  text-align: center;
+}
+
+.hiddenToast {
+  display: none;
+}

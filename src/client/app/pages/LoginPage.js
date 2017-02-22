@@ -23,13 +23,18 @@ import {
 } from 'mobx'
 import {observer} from 'mobx-react';
 import {Transport} from '../utils';
-import {UserStore} from '../stores';
+import {
+  UserStore,
+  ToastStore
+} from '../stores';
+import {Toast} from '../components';
 
 @observer
 class LoginPage extends React.Component {
 
   @observable username = '';
   @observable password = '';
+  @observable toastMessage = '';
 
   constructor(props) {
     super(props);
@@ -66,6 +71,7 @@ class LoginPage extends React.Component {
     }
     catch (error) {
       console.log('error login', error);
+      ToastStore.addToastMessage('Wrong username or password');
     }
   }
 
@@ -114,6 +120,7 @@ class LoginPage extends React.Component {
             </Button>
           </form>
         </div>
+        <Toast/>
       </div>
     )
   }
