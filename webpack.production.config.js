@@ -24,7 +24,11 @@ var config = {
       {
         test: /\.jsx?/,
         include: APP_DIR,
-        loaders: ['babel']
+        loaders: ['react-hot', 'babel']
+      },
+      {
+        test: /\.css$/,
+        loaders: [ 'style-loader', 'css-loader' ]
       },
       {
         test: /\.scss$/,
@@ -33,6 +37,10 @@ var config = {
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loader: 'url?limit=10000!img?progressive=true'
+      },
+      {
+        test   : /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+        loader : 'file-loader'
       }
     ]
   },
