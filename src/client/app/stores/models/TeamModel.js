@@ -16,9 +16,17 @@ class TeamModel {
 
   @action
   setValues(team) {
-    this.id = team.id;
-    this.team_name = team.team_name;
-    this.hattrick_team_id = team.hattrick_team_id;
+    if (team.id) {
+      this.id = team.id;
+    }
+
+    if (team.team_name) {
+      this.team_name = team.team_name;
+    }
+
+    if (team.hattrick_team_id) {
+      this.hattrick_team_id = team.hattrick_team_id;
+    }
   }
 
   @action

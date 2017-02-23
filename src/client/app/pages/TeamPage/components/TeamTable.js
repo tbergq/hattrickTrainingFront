@@ -16,7 +16,10 @@ import {
   ToastStore
 } from '../../../stores';
 import styles from './TeamTable.scss';
-import {CreateTeamForm} from './';
+import {
+  CreateTeamForm,
+  EditTeamForm
+} from './';
 
 
 @observer
@@ -34,6 +37,7 @@ class TeamTable extends React.Component {
     this.showDeleteWarning = this.showDeleteWarning.bind(this);
     this.deleteTeam = this.deleteTeam.bind(this);
     this.showAddTeam = this.showAddTeam.bind(this);
+    this.showEditTeam = this.showEditTeam.bind(this);
   }
 
   componentWillMount() {
@@ -44,9 +48,10 @@ class TeamTable extends React.Component {
   }
 
   @action
-  async deleteTeam(id) {
-    await TeamStore.deleteTeam(id);
+  async deleteTeam(team) {
+    await TeamStore.deleteTeam(team.id);
     this.toggleModal();
+    ToastStore.addToastMessage(`${team.team_name} was deleted`);
   }
 
   @action
@@ -64,15 +69,22 @@ class TeamTable extends React.Component {
     this.modalFooter = (
       <div>
         <Button onClick={this.toggleModal}>Cancel</Button>
-        <Button bsStyle="danger" onClick={() => this.deleteTeam(team.id)}>Delete</Button>
+        <Button bsStyle="danger" onClick={() => this.deleteTeam(team)}>Delete</Button>
       </div>
     );
     this.toggleModal();
   }
 
   @action
+  showEditTeam(team) {
+    this.modalTitle = `Edit ${team.team_name}`;
+    this.modalBody = <EditTeamForm toggleModal={this.toggleModal} team={team}/>;
+    this.modalFooter = null;
+    this.toggleModal();
+  }
+
+  @action
   toggleModal() {
-    console.log('toggle modal');
     this.showModal = !this.showModal;
   }
 
@@ -111,6 +123,7 @@ class TeamTable extends React.Component {
                   <Button
                     bsStyle="success"
                     bsSize="small"
+                    onClick={() => this.showEditTeam(team)}
                   >
                     <span className="glyphicon glyphicon-pencil"/>
                   </Button>

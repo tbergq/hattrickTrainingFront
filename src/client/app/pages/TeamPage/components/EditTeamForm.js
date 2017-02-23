@@ -16,35 +16,28 @@ import {
 } from '../../../stores';
 
 @observer
-class CreateTeamForm extends React.Component {
+class EditTeamForm extends React.Component {
 
   @observable team_name = '';
   @observable hattrick_team_id = '';
+  @observable id;
 
   constructor(props) {
     super(props);
 
     this.onChange = this.onChange.bind(this);
-    this.addTeam = this.addTeam.bind(this);
+    this.submitTeam = this.submitTeam.bind(this);
   }
 
-  @action
-  async addTeam(e) {
-    if (e && e.preventDefault) {
-      e.preventDefault();
+  componentWillMount() {
+    if (this.props.team) {
+      this.team_name = this.props.team.team_name;
+      this.hattrick_team_id = this.props.team.hattrick_team_id;
+      this.id = this.props.team.id;
     }
-
-    if (!this.team_name) {
-      ToastStore.addToastMessage('Team name is missing, it is required field');
-      return;
+    else {
+      ToastStore.addToastMessage('Team not ready when component mounts');
     }
-
-    await TeamStore.addTeam({
-      team_name: this.team_name,
-      hattrick_team_id: this.hattrick_team_id
-    });
-    this.props.toggleModal();
-    ToastStore.addToastMessage(`${this.team_name} was successfully created`);
   }
 
   @action
@@ -52,10 +45,29 @@ class CreateTeamForm extends React.Component {
     this[e.target.name] = e.target.value;
   }
 
+  @action
+  async submitTeam(e) {
+    e.preventDefault();
+
+    if (!this.team_name) {
+      ToastStore.addToastMessage('Team name is missing, it is required field');
+      return;
+    }
+
+    await TeamStore.updateTeam({
+      id: this.id,
+      team_name: this.team_name,
+      hattrick_team_id: this.hattrick_team_id
+    });
+
+    this.props.toggleModal();
+    ToastStore.addToastMessage(`${this.team_name} was successfully updated`);
+  }
+
   render() {
     return (
       <div>
-        <form onSubmit={this.addTeam}>
+        <form onSubmit={this.submitTeam}>
           <FormGroup
             controlId="teamName"
           >
@@ -87,7 +99,7 @@ class CreateTeamForm extends React.Component {
                 bsStyle="primary"
                 type="submit"
               >
-                Create
+                Update
               </Button>
             </div>
           </FormGroup>
@@ -97,4 +109,4 @@ class CreateTeamForm extends React.Component {
   }
 }
 
-export default CreateTeamForm;
+export default EditTeamForm;

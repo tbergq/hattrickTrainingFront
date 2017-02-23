@@ -73,6 +73,23 @@ class TeamStore {
       console.log(err);
     }
   }
+
+  @action
+  async updateTeam(team) {
+    try {
+      let updatedTeam = await Transport.call(`${url}${team.id}/`,{
+        method: 'PATCH',
+        body: team
+      });
+
+      let existingTeam = this.getTeamById(team.id);
+      existingTeam.update(team);
+    }
+    catch (err) {
+      ToastStore.addToastMessage('Failed to update team');
+      console.log(err);
+    }
+  }
 }
 
 const singelton = new TeamStore();
