@@ -7,7 +7,7 @@ import {ToastStore} from './';
 import {Transport} from '../utils';
 import {PlayerModel} from './models';
 
-const url = 'api/Teams/teams/';
+const url = 'api/teams/';
 
 class PlayerStore {
 

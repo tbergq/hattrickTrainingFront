@@ -7,7 +7,7 @@ import {TeamModel} from './models';
 import {Transport} from '../utils';
 import {ToastStore} from './';
 
-const url = 'api/Teams/teams/';
+const url = 'api/teams/';
 
 class TeamStore {
   @observable teams = [];
