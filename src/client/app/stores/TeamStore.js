@@ -12,6 +12,39 @@ const url = 'api/Teams/teams/';
 class TeamStore {
   @observable teams = [];
 
+  @action
+  async addTeam(team) {
+    try {
+      let addedTeam = await Transport.call(url, {
+        method: 'POST',
+        body: team
+      });
+      this.teams.push(new TeamModel(addedTeam));
+    }
+    catch (err) {
+      ToastStore.addToastMessage('Failed to add team');
+      console.log(err);
+    }
+  }
+
+  @action
+  async deleteTeam(id) {
+    try {
+      await Transport.call(`${url}${id}/`, {
+        method: 'DELETE'
+      });
+      let index = this.teams.findIndex(team => {
+        return team.id === id;
+      });
+      this.teams.splice(index, 1);
+      console.log('sliced teams', this.teams.slice());
+    }
+    catch (err) {
+      ToastStore.addToastMessage('Could not delete team');
+      console.log(err);
+    }
+  }
+
   getTeamById(id) {
     let team = this.teams.find(team => {
       return team.id === id;
@@ -33,7 +66,6 @@ class TeamStore {
           this.teams.push(new TeamModel(team));
         }
       });
-      console.log('got teams', this.teams.slice());
       return this.teams;
     }
     catch (err) {
