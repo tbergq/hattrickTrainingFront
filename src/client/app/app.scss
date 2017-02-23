@@ -1,3 +1,5 @@
-.test {
-  color: white;
+.innerAppContainer {
+  height: calc(100vh - 46px);
+  overflow-y: scroll;
+  padding: 15px 0px 15px 0px;
 }

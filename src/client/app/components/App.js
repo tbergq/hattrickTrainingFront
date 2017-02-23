@@ -1,7 +1,7 @@
 import React from 'react';
 import {observer} from 'mobx-react';
 import {observable} from 'mobx';
-import {browserHistory } from 'react-router';
+import {browserHistory} from 'react-router';
 import {
   Header,
   Toast
@@ -10,6 +10,7 @@ import {
   UserStore,
   ToastStore
 } from '../stores';
+import styles from '../app.scss';
 
 @observer
 class App extends React.Component {
@@ -26,12 +27,14 @@ class App extends React.Component {
   }
 
   render() {
-    return(
+    return (
       <div className="app-container">
         <Header
           username={this.username}
         />
-        {this.props.children}
+        <div className={styles.innerAppContainer}>
+          {this.props.children}
+        </div>
         <Toast/>
       </div>
     )

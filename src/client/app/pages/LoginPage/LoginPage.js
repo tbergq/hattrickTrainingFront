@@ -22,12 +22,13 @@ import {
   action
 } from 'mobx'
 import {observer} from 'mobx-react';
-import {Transport} from '../utils';
+import {Transport} from '../../utils';
 import {
   UserStore,
   ToastStore
-} from '../stores';
-import {Toast} from '../components';
+} from '../../stores';
+import {Toast} from '../../components';
+import moment from 'moment';
 
 @observer
 class LoginPage extends React.Component {
@@ -43,9 +44,15 @@ class LoginPage extends React.Component {
   }
 
   componentWillMount() {
-    console.log('will mount', this.props.location.query);
     if (this.props.location.query.logout && this.props.location.query.logout === 'true') {
       UserStore.clearToken();
+    }
+    else {
+      let tokenData = UserStore.tokenData;
+
+      if (tokenData.expireTime && (moment(tokenData.expireTime) > moment())) {
+        browserHistory.push('home');
+      }
     }
   }
 
