@@ -19,14 +19,14 @@ var config = {
   output: {
     path: BUILD_DIR,
     filename: 'bundle.js',
-    publicPath: ""
+    publicPath: "/"
   },
   module: {
     loaders: [
       {
         test: /\.jsx?/,
         include: APP_DIR,
-        loaders: ['react-hot', 'babel']
+        loaders: ['babel']
       },
       {
         test: /\.css$/,

@@ -28,7 +28,7 @@ class Transport {
     }
     try {
       let response = await fetch(`${this.baseUrl}/${url}`, params);
-      console.log('transportation response', response);
+
       if (response.status === 204) {
         return null;
       }
@@ -36,7 +36,7 @@ class Transport {
         throw new Error(response);
       }
       let json = await response.json();
-      console.log('transportation', json);
+
       return json;
     }
     catch (err) {

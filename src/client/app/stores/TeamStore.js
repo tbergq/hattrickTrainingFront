@@ -53,6 +53,24 @@ class TeamStore {
   }
 
   @action
+  async fetchTeam(id) {
+    let team = this.getTeamById(id);
+
+    if (team) {
+      return team;
+    }
+
+    try {
+      team = await Transport.call(`${url}${id}/`);
+      return team;
+    }
+    catch (err) {
+      ToastStore.addToastMessage(`Failed to get team with id = ${id}`);
+      console.log(err);
+    }
+  }
+
+  @action
   async fetchTeams() {
     try {
       let serverTeams = await Transport.call(url);
@@ -77,7 +95,7 @@ class TeamStore {
   @action
   async updateTeam(team) {
     try {
-      let updatedTeam = await Transport.call(`${url}${team.id}/`,{
+      let updatedTeam = await Transport.call(`${url}${team.id}/`, {
         method: 'PATCH',
         body: team
       });

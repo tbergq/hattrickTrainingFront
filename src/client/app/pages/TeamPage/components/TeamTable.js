@@ -20,30 +20,31 @@ import {
   CreateTeamForm,
   EditTeamForm
 } from './';
+import {Link} from 'react-router';
 
 
 @observer
 class TeamTable extends React.Component {
 
-  @observable showModal = false;
-  @observable modalTitle = '';
-  @observable modalBody = '';
+  @observable showModal   = false;
+  @observable modalTitle  = '';
+  @observable modalBody   = '';
   @observable modalFooter = '';
 
   constructor(props) {
     super(props);
 
-    this.toggleModal = this.toggleModal.bind(this);
+    this.toggleModal       = this.toggleModal.bind(this);
     this.showDeleteWarning = this.showDeleteWarning.bind(this);
-    this.deleteTeam = this.deleteTeam.bind(this);
-    this.showAddTeam = this.showAddTeam.bind(this);
-    this.showEditTeam = this.showEditTeam.bind(this);
+    this.deleteTeam        = this.deleteTeam.bind(this);
+    this.showAddTeam       = this.showAddTeam.bind(this);
+    this.showEditTeam      = this.showEditTeam.bind(this);
   }
 
   componentWillMount() {
-    this.showModal = false;
-    this.modalTitle = '';
-    this.modalBody = '';
+    this.showModal   = false;
+    this.modalTitle  = '';
+    this.modalBody   = '';
     this.modalFooter = '';
   }
 
@@ -56,16 +57,16 @@ class TeamTable extends React.Component {
 
   @action
   showAddTeam() {
-    this.modalTitle = 'Add team';
-    this.modalBody = <CreateTeamForm toggleModal={this.toggleModal}/>;
+    this.modalTitle  = 'Add team';
+    this.modalBody   = <CreateTeamForm toggleModal={this.toggleModal}/>;
     this.modalFooter = null;
     this.toggleModal();
   }
 
   @action
   showDeleteWarning(team) {
-    this.modalTitle = 'Confirm delete';
-    this.modalBody = `Are you sure you want to delete ${team.team_name}?`;
+    this.modalTitle  = 'Confirm delete';
+    this.modalBody   = `Are you sure you want to delete ${team.team_name}?`;
     this.modalFooter = (
       <div>
         <Button onClick={this.toggleModal}>Cancel</Button>
@@ -77,8 +78,8 @@ class TeamTable extends React.Component {
 
   @action
   showEditTeam(team) {
-    this.modalTitle = `Edit ${team.team_name}`;
-    this.modalBody = <EditTeamForm toggleModal={this.toggleModal} team={team}/>;
+    this.modalTitle  = `Edit ${team.team_name}`;
+    this.modalBody   = <EditTeamForm toggleModal={this.toggleModal} team={team}/>;
     this.modalFooter = null;
     this.toggleModal();
   }
@@ -97,15 +98,15 @@ class TeamTable extends React.Component {
           bordered
         >
           <thead>
-          <tr colSpan="3">
-            <div className={styles.addTeamButtonContainer}>
+          <tr>
+            <th colSpan="3" className={styles.addTeamButtonContainer}>
               <Button
                 bsStyle="success"
                 onClick={this.showAddTeam}
               >
                 Add team
               </Button>
-            </div>
+            </th>
           </tr>
           <tr>
             <th>Team name</th>
@@ -117,7 +118,11 @@ class TeamTable extends React.Component {
           {this.props.teams.map(team => {
             return (
               <tr key={team.id}>
-                <td>{team.team_name}</td>
+                <td>
+                  <Link to={`home/team/${team.id}`}>
+                    {team.team_name}
+                  </Link>
+                </td>
                 <td>{team.hattrick_team_id}</td>
                 <td>
                   <Button

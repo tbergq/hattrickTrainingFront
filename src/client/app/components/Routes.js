@@ -3,7 +3,8 @@ import { Router, Route, hashHistory, IndexRoute, browserHistory } from 'react-ro
 import App from './App';
 import {
   LoginPage,
-  TeamPage
+  TeamPage,
+  TeamDetailPage
 } from '../pages';
 
 class Routes extends Component {
@@ -12,8 +13,9 @@ class Routes extends Component {
     return (
       <Router history={browserHistory}>
         <Route path="/" component={LoginPage}/>
-        <Route path="home" component={App}>
+        <Route path="/home" component={App}>
           <IndexRoute component={TeamPage}/>
+          <Route path="team/:id" component={TeamDetailPage}/>
         </Route>
       </Router>
     )
