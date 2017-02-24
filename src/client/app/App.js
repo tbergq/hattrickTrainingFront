@@ -7,6 +7,9 @@ import 'script!whatwg-fetch';
 import './app-wide-styles.css';
 import './app.scss';
 import 'animate.css/animate.css';
+import moment from 'moment';
+
+moment.locale(navigator.language);
 
 
 

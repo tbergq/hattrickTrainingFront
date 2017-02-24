@@ -106,6 +106,25 @@ class PlayerStore {
       return 0;
     });
   }
+
+  @action
+  async update(player, teamId) {
+    try {
+      let updatedPlayer = await Transport.call(`${url}${teamId}/players/${player.id}/`, {
+        method: 'PATCH',
+        body: player
+      });
+
+      let existingPlayer = this._getPlayerById(player.id);
+      existingPlayer.update(updatedPlayer);
+      return existingPlayer;
+    }
+    catch(err) {
+      ToastStore.addToastMessage('Failed to update player');
+      console.log(err);
+      throw err;
+    }
+  }
 }
 
 const singelton = new PlayerStore();

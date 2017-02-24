@@ -3,7 +3,8 @@ import {observer} from 'mobx-react';
 import {action, observable} from 'mobx';
 import {
   PlayerStore,
-  ToastStore
+  ToastStore,
+  ChangeStore
 } from '../../stores';
 import {browserHistory} from 'react-router';
 import {
@@ -11,8 +12,12 @@ import {
   Table,
   Glyphicon
 } from 'react-bootstrap';
+import {ChangeItem} from './components';
 import DatePicker from 'react-bootstrap-date-picker';
 import styles from './PlayerDetail.scss';
+import moment from 'moment';
+
+const NO_CHANGE_DETECTED = 'No changes detected';
 
 @observer
 class PlayerDetailPage extends React.Component {
@@ -20,12 +25,15 @@ class PlayerDetailPage extends React.Component {
   @observable player     = null;
   @observable changeDate = new Date().toISOString();
   @observable dateFormat = 'DD/MM/YYYY';
+              changes    = [];
 
   constructor(props) {
     super(props);
 
-    this.dateChanged = this.dateChanged.bind(this);
-    this.changeValue = this.changeValue.bind(this);
+    this.dateChanged     = this.dateChanged.bind(this);
+    this.changeValue     = this.changeValue.bind(this);
+    this.submitChanges   = this.submitChanges.bind(this);
+    this.getLatestChange = this.getLatestChange.bind(this);
   }
 
   @action
@@ -33,8 +41,10 @@ class PlayerDetailPage extends React.Component {
     if (navigator.language === 'nb') {
       this.dateFormat = 'DD.MM.YYYY';
     }
+
     try {
       this.player = await PlayerStore.getPlayer(this.props.routeParams.teamId, this.props.routeParams.playerId);
+      await ChangeStore.fetchChanges(this.props.routeParams.teamId, this.props.routeParams.playerId);
     }
     catch (err) {
       browserHistory.push('/home');
@@ -54,12 +64,39 @@ class PlayerDetailPage extends React.Component {
       return;
     }
 
+    let oldValue = this.player[key];
     this.player[key] += value;
+
+    this.changes.push({
+      player: this.player.id,
+      change_date: moment(new Date(this.changeDate)).format('YYYY-MM-DD'),
+      old_value: oldValue,
+      new_value: this.player[key],
+      skill: key
+    });
   }
 
   @action
   dateChanged(value) {
     this.changeDate = value;
+  }
+
+  @action
+  getLatestChange(key) {
+    console.log('test', ChangeStore.changes.slice());
+    return 'test';
+  }
+
+  @action
+  async submitChanges() {
+    try {
+      await ChangeStore.addChanges(this.changes, this.props.routeParams.teamId, this.props.routeParams.playerId);
+      this.player = await PlayerStore.update(this.player, this.props.routeParams.teamId);
+      ToastStore.addToastMessage('Changes submitted');
+    }
+    catch (err) {
+
+    }
   }
 
   render() {
@@ -89,7 +126,7 @@ class PlayerDetailPage extends React.Component {
           <tr>
             <th>Skill</th>
             <th>Current value</th>
-            <th>Last change</th>
+            <th>Latest change</th>
             <th>Action</th>
           </tr>
           </thead>
@@ -97,7 +134,11 @@ class PlayerDetailPage extends React.Component {
           <tr>
             <td>Keeper</td>
             <td>{this.player.keeper}</td>
-            <td>N/A</td>
+            <td>
+              <ChangeItem
+                changeItem={ChangeStore.latestKeeperChange}
+              />
+            </td>
             <td>
               <Button
                 bsStyle="success"
@@ -117,7 +158,11 @@ class PlayerDetailPage extends React.Component {
           <tr>
             <td>Defending</td>
             <td>{this.player.defending}</td>
-            <td>N/A</td>
+            <td>
+              <ChangeItem
+                changeItem={ChangeStore.latestDefendingChange}
+              />
+            </td>
             <td>
               <Button
                 bsStyle="success"
@@ -137,7 +182,11 @@ class PlayerDetailPage extends React.Component {
           <tr>
             <td>Playmaking</td>
             <td>{this.player.playmaking}</td>
-            <td>N/A</td>
+            <td>
+              <ChangeItem
+                changeItem={ChangeStore.latestPlaymakingChange}
+              />
+            </td>
             <td>
               <Button
                 bsStyle="success"
@@ -157,7 +206,11 @@ class PlayerDetailPage extends React.Component {
           <tr>
             <td>Winger</td>
             <td>{this.player.winger}</td>
-            <td>N/A</td>
+            <td>
+              <ChangeItem
+                changeItem={ChangeStore.latestWingerChange}
+              />
+            </td>
             <td>
               <Button
                 bsStyle="success"
@@ -177,7 +230,11 @@ class PlayerDetailPage extends React.Component {
           <tr>
             <td>Passing</td>
             <td>{this.player.passing}</td>
-            <td>N/A</td>
+            <td>
+              <ChangeItem
+                changeItem={ChangeStore.latestPassingChange}
+              />
+            </td>
             <td>
               <Button
                 bsStyle="success"
@@ -197,7 +254,11 @@ class PlayerDetailPage extends React.Component {
           <tr>
             <td>Scoring</td>
             <td>{this.player.scoring}</td>
-            <td>N/A</td>
+            <td>
+              <ChangeItem
+                changeItem={ChangeStore.latestScoringChange}
+              />
+            </td>
             <td>
               <Button
                 bsStyle="success"
@@ -217,7 +278,11 @@ class PlayerDetailPage extends React.Component {
           <tr>
             <td>Set pieces</td>
             <td>{this.player.set_pieces}</td>
-            <td>N/A</td>
+            <td>
+              <ChangeItem
+                changeItem={ChangeStore.latestSetPiecesChange}
+              />
+            </td>
             <td>
               <Button
                 bsStyle="success"
@@ -245,6 +310,7 @@ class PlayerDetailPage extends React.Component {
           </Button>
           <Button
             bsStyle="primary"
+            onClick={this.submitChanges}
           >
             Save
           </Button>
