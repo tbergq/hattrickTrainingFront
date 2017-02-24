@@ -135,8 +135,6 @@ class ChangeStore {
         }
       });
 
-      console.log('changes is', this.changes.slice(), changes);
-
       return this.changes;
     }
     catch (err) {

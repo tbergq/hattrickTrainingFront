@@ -66,7 +66,7 @@ class AddPlayerForm extends React.Component {
       ToastStore.addToastMessage(`Successfully added ${this.name}`);
     }
     catch (err) {
-      console.log('woopsi', err);
+
     }
 
     this.props.toggleModal();

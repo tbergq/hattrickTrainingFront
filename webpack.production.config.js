@@ -52,7 +52,10 @@ var config = {
       template : APP_DIR + '/index.html'
     }),
     new webpack.DefinePlugin({
-      'BASE_URL': JSON.stringify('https://tbergq.pythonanywhere.com')
+      'BASE_URL': JSON.stringify('https://tbergq.pythonanywhere.com'),
+      'process.env': {
+        NODE_ENV: JSON.stringify('production')
+      }
     })
   ],
   devServer: {

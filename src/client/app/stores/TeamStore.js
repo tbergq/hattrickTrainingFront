@@ -38,7 +38,6 @@ class TeamStore {
         return team.id === id;
       });
       this.teams.splice(index, 1);
-      console.log('sliced teams', this.teams.slice());
     }
     catch (err) {
       ToastStore.addToastMessage('Could not delete team');
