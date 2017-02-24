@@ -10,6 +10,7 @@ class ChangeStore {
 
   @observable changes = [];
 
+
   _getChangeById(id) {
     id = parseInt(id);
 
@@ -120,7 +121,8 @@ class ChangeStore {
   @action
   async fetchChanges(teamId, playerId) {
     try {
-      let changes = await Transport.call(`${url}${teamId}/players/${teamId}/changes/`);
+      this.changes = [];
+      let changes  = await Transport.call(`${url}${teamId}/players/${playerId}/changes/`);
 
       changes.forEach(change => {
         let existingChange = this._getChangeById(change.id);
@@ -132,6 +134,8 @@ class ChangeStore {
           this.changes.push(new ChangeModel(change));
         }
       });
+
+      console.log('changes is', this.changes.slice(), changes);
 
       return this.changes;
     }

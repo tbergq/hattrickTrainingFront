@@ -42,8 +42,10 @@ class PlayerDetailPage extends React.Component {
       this.dateFormat = 'DD.MM.YYYY';
     }
 
+    console.log(this.props.routeParams.teamId, this.props.routeParams.playerId);
+
     try {
-      this.player = await PlayerStore.getPlayer(this.props.routeParams.teamId, this.props.routeParams.playerId);
+      this.player         = await PlayerStore.getPlayer(this.props.routeParams.teamId, this.props.routeParams.playerId);
       await ChangeStore.fetchChanges(this.props.routeParams.teamId, this.props.routeParams.playerId);
     }
     catch (err) {
