@@ -4,7 +4,8 @@ import App from './App';
 import {
   LoginPage,
   TeamPage,
-  TeamDetailPage
+  TeamDetailPage,
+  PlayerDetailPage
 } from '../pages';
 
 class Routes extends Component {
@@ -16,6 +17,7 @@ class Routes extends Component {
         <Route path="/home" component={App}>
           <IndexRoute component={TeamPage}/>
           <Route path="team/:id" component={TeamDetailPage}/>
+          <Route path="player/:teamId/:playerId" component={PlayerDetailPage}/>
         </Route>
       </Router>
     )

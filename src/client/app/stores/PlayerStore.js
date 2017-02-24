@@ -14,9 +14,13 @@ class PlayerStore {
   @observable players = [];
 
   _getPlayerById(id) {
+    id = parseInt(id);
+
     let player = this.players.find(player => {
       return player.id === id;
     });
+
+    return player;
   }
 
   @action
@@ -32,6 +36,27 @@ class PlayerStore {
     }
     catch (err) {
       ToastStore.addToastMessage('Failed to add player');
+      console.log(err);
+      throw err;
+    }
+  }
+
+  @action
+  async getPlayer(teamId, playerId) {
+    let player = this._getPlayerById(playerId);
+
+    if (player) {
+      return player;
+    }
+
+    try {
+      player          = await Transport.call(`${url}${teamId}/players/${playerId}/`);
+      let playerModel = new PlayerModel(player);
+      this.players.push(playerModel);
+      return playerModel;
+    }
+    catch (err) {
+      ToastStore.addToastMessage('Failed to get player');
       console.log(err);
       throw err;
     }

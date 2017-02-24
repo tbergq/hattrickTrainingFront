@@ -1,6 +1,7 @@
 import React from 'react';
 import {observer} from 'mobx-react';
 import {action, observable} from 'mobx';
+import {Link} from 'react-router';
 
 @observer
 class PlayerItemRow extends React.Component {
@@ -13,7 +14,11 @@ class PlayerItemRow extends React.Component {
     let player = this.props.player;
     return (
       <tr>
-        <td>{player.name}</td>
+        <td>
+          <Link to={`/home/player/${player.team}/${player.id}`}>
+            {player.name}
+          </Link>
+        </td>
         <td>{player.keeper}</td>
         <td>{player.defending}</td>
         <td>{player.playmaking}</td>
