@@ -20,6 +20,24 @@ class PlayerStore {
   }
 
   @action
+  async addPlayer(player) {
+    try {
+      let response = await Transport.call(`${url}${player.team}/players/`, {
+        method: 'POST',
+        body: player
+      });
+
+      this.players.push(new PlayerModel(response));
+      return response;
+    }
+    catch (err) {
+      ToastStore.addToastMessage('Failed to add player');
+      console.log(err);
+      throw err;
+    }
+  }
+
+  @action
   async fetchPlayers(teamId) {
     try {
       let players = await Transport.call(`${url}${teamId}/players/`);
@@ -39,7 +57,29 @@ class PlayerStore {
     catch (err) {
       ToastStore.addToastMessage('Failed to get players');
       console.log(err);
+      throw err;
     }
+  }
+
+  @action
+  sortBy(column, ascending) {
+    let modifier = 1;
+
+    if (ascending) {
+      modifier = -1;
+    }
+
+    this.players = this.players.sort((item1, item2) => {
+      if (item1[column] < item2[column]) {
+        return -1 * modifier;
+      }
+
+      if (item1[column] > item2[column]) {
+        return 1 * modifier;
+      }
+
+      return 0;
+    });
   }
 }
 

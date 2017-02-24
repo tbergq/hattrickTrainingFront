@@ -13,14 +13,14 @@ class PlayerItemRow extends React.Component {
     let player = this.props.player;
     return (
       <tr>
-        <th>{player.name}</th>
-        <th>{player.keeper}</th>
-        <th>{player.defending}</th>
-        <th>{player.playmaking}</th>
-        <th>{player.winger}</th>
-        <th>{player.passing}</th>
-        <th>{player.scoring}</th>
-        <th>{player.set_pieces}</th>
+        <td>{player.name}</td>
+        <td>{player.keeper}</td>
+        <td>{player.defending}</td>
+        <td>{player.playmaking}</td>
+        <td>{player.winger}</td>
+        <td>{player.passing}</td>
+        <td>{player.scoring}</td>
+        <td>{player.set_pieces}</td>
       </tr>
     )
   }

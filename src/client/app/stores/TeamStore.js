@@ -24,6 +24,7 @@ class TeamStore {
     catch (err) {
       ToastStore.addToastMessage('Failed to add team');
       console.log(err);
+      throw err;
     }
   }
 
@@ -42,6 +43,7 @@ class TeamStore {
     catch (err) {
       ToastStore.addToastMessage('Could not delete team');
       console.log(err);
+      throw err;
     }
   }
 
@@ -67,6 +69,7 @@ class TeamStore {
     catch (err) {
       ToastStore.addToastMessage(`Failed to get team with id = ${id}`);
       console.log(err);
+      throw err;
     }
   }
 
@@ -89,6 +92,7 @@ class TeamStore {
     catch (err) {
       ToastStore.addToastMessage('Failed to fetch teams from server');
       console.log(err);
+      throw err;
     }
   }
 
@@ -106,6 +110,7 @@ class TeamStore {
     catch (err) {
       ToastStore.addToastMessage('Failed to update team');
       console.log(err);
+      throw err;
     }
   }
 }

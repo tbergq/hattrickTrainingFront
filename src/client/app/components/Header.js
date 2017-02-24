@@ -31,10 +31,11 @@ class Header extends React.Component {
           <Navbar.Toggle />
         </Navbar.Header>
         <Navbar.Collapse>
-          <Nav style={{display: 'none'}}>
-            <NavItem eventKey={1} href="#">Link</NavItem>
-            <NavItem eventKey={2} href="#">Link</NavItem>
-            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+          <Nav>
+            <LinkContainer to={{pathname: '/home'}}>
+              <NavItem eventKey={1}>Teams</NavItem>
+            </LinkContainer>
+            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown" style={{display: 'none'}}>
               <MenuItem eventKey={3.1}>Action</MenuItem>
               <MenuItem eventKey={3.2}>Another action</MenuItem>
               <MenuItem eventKey={3.3}>Something else here</MenuItem>
@@ -44,7 +45,7 @@ class Header extends React.Component {
           </Nav>
           <Nav pullRight>
             <NavItem>Hello {this.props.username}</NavItem>
-            <LinkContainer to={{pathname: '/', query: {logout:true}}}>
+            <LinkContainer to={{pathname: '/', query: {logout: true}}}>
               <NavItem eventKey={1}>Log out</NavItem>
             </LinkContainer>
           </Nav>
