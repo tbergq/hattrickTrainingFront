@@ -52,6 +52,9 @@ var config = {
     new HtmlWebpackPlugin({
       title: 'tut1',
       template: APP_DIR + '/index.html'
+    }),
+    new webpack.DefinePlugin({
+      'BASE_URL': JSON.stringify('http://localhost:8000')
     })
   ],
   devServer: {

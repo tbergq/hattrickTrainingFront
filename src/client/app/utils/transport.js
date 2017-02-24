@@ -1,6 +1,6 @@
 class Transport {
 
-  baseUrl = 'http://localhost:8000';
+  baseUrl = BASE_URL;
   token;
 
   constructor() {

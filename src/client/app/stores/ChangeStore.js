@@ -154,8 +154,6 @@ class ChangeStore {
 
       return 0;
     });
-
-    console.log('sort', this.changes.slice());
   }
 }
 

@@ -40,7 +40,7 @@ var config = {
       },
       {
         test   : /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9=&.]+)?$/,
-        loader : 'file-loader'
+        loader: 'file?name=[name].[ext]'
       }
     ]
   },
@@ -50,6 +50,9 @@ var config = {
     new HtmlWebpackPlugin({
       title : 'tut1',
       template : APP_DIR + '/index.html'
+    }),
+    new webpack.DefinePlugin({
+      'BASE_URL': JSON.stringify('https://tbergq.pythonanywhere.com')
     })
   ],
   devServer: {
