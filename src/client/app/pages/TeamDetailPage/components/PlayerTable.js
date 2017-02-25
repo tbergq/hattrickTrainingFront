@@ -38,7 +38,7 @@ class PlayerTable extends React.Component {
   @action
   showAddPlayer() {
     this.title  = 'Add new player';
-    this.body   = <AddPlayerForm toggleModal={this.toggleModal} teamId={this.props.team.id}/>;
+    this.body   = <AddPlayerForm toggleModal={action(this.toggleModal)} teamId={this.props.team.id}/>;
     this.footer = null;
     this.toggleModal();
   }

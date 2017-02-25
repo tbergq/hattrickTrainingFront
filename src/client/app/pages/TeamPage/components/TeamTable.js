@@ -18,7 +18,8 @@ import {
 import styles from './TeamTable.scss';
 import {
   CreateTeamForm,
-  EditTeamForm
+  EditTeamForm,
+  DeleteFooter
 } from './';
 import {Link} from 'react-router';
 
@@ -59,7 +60,7 @@ class TeamTable extends React.Component {
   @action
   showAddTeam() {
     this.modalTitle  = 'Add team';
-    this.modalBody   = <CreateTeamForm toggleModal={this.toggleModal}/>;
+    this.modalBody   = <CreateTeamForm toggleModal={action(this.toggleModal)}/>;
     this.modalFooter = null;
     this.toggleModal();
   }
@@ -68,19 +69,15 @@ class TeamTable extends React.Component {
   showDeleteWarning(team) {
     this.modalTitle  = 'Confirm delete';
     this.modalBody   = `Are you sure you want to delete ${team.team_name}?`;
-    this.modalFooter = (
-      <div>
-        <Button onClick={this.toggleModal}>Cancel</Button>
-        <Button bsStyle="danger" onClick={() => this.deleteTeam(team)}>Delete</Button>
-      </div>
-    );
+    this.modalFooter = <DeleteFooter cancel={action(this.toggleModal)} delete={action(() => this.deleteTeam(team))}/>;
+
     this.toggleModal();
   }
 
   @action
   showEditTeam(team) {
     this.modalTitle  = `Edit ${team.team_name}`;
-    this.modalBody   = <EditTeamForm toggleModal={this.toggleModal} team={team}/>;
+    this.modalBody   = <EditTeamForm toggleModal={action(() => this.toggleModal())} team={team}/>;
     this.modalFooter = null;
     this.toggleModal();
   }

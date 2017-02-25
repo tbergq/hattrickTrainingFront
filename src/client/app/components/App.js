@@ -16,7 +16,7 @@ import {
 } from '../stores';
 import styles from '../app.scss';
 
-useStrict(true);
+useStrict(false);
 
 @observer
 class App extends React.Component {
