@@ -39,16 +39,27 @@ class PlayerDetailPage extends React.Component {
   @action
   async componentWillMount() {
     if (navigator.language === 'nb') {
-      this.dateFormat = 'DD.MM.YYYY';
+      this.setDateFormat('DD.MM.YYYY');
     }
 
     try {
-      this.player         = await PlayerStore.getPlayer(this.props.routeParams.teamId, this.props.routeParams.playerId);
+      let player         = await PlayerStore.getPlayer(this.props.routeParams.teamId, this.props.routeParams.playerId);
+      this.setPlayer(player);
       await ChangeStore.fetchChanges(this.props.routeParams.teamId, this.props.routeParams.playerId);
     }
     catch (err) {
       browserHistory.push('/home');
     }
+  }
+
+  @action
+  setPlayer(player) {
+    this.player = player;
+  }
+
+  @action
+  setDateFormat(format) {
+    this.dateFormat = format
   }
 
   @action

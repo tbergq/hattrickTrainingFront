@@ -15,6 +15,7 @@ import {TeamTable} from './components';
 @observer
 class TeamPage extends React.Component {
 
+  @action
   async componentWillMount() {
     await TeamStore.fetchTeams();
   }

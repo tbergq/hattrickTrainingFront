@@ -11,10 +11,19 @@ class TeamDetailPage extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.setTeam = this.setTeam.bind(this);
   }
 
+
   async componentWillMount() {
-    this.team = await TeamStore.fetchTeam(this.props.routeParams.id);
+    let team =  await TeamStore.fetchTeam(this.props.routeParams.id);
+    this.setTeam(team);
+  }
+
+  @action
+  setTeam(team) {
+    this.team = team;
   }
 
   render() {

@@ -1,6 +1,10 @@
 import React from 'react';
 import {observer} from 'mobx-react';
-import {observable} from 'mobx';
+import {
+  action,
+  observable,
+  useStrict
+} from 'mobx';
 import {browserHistory} from 'react-router';
 import {
   Header,
@@ -12,11 +16,14 @@ import {
 } from '../stores';
 import styles from '../app.scss';
 
+useStrict(true);
+
 @observer
 class App extends React.Component {
 
   @observable username = '';
 
+  @action
   componentWillMount() {
     let tokenData = UserStore.tokenData;
     if (!tokenData.username) {

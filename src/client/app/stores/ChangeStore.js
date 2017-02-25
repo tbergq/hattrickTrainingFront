@@ -94,9 +94,9 @@ class ChangeStore {
 
       let results = await Promise.all(promises);
 
-      results.forEach(result => {
+      results.forEach(action(result => {
         this.changes.push(new ChangeModel(result));
-      });
+      }));
 
       this.sortByDate();
 
@@ -124,7 +124,7 @@ class ChangeStore {
       this.changes = [];
       let changes  = await Transport.call(`${url}${teamId}/players/${playerId}/changes/`);
 
-      changes.forEach(change => {
+      changes.forEach(action(change => {
         let existingChange = this._getChangeById(change.id);
 
         if (existingChange) {
@@ -133,7 +133,7 @@ class ChangeStore {
         else {
           this.changes.push(new ChangeModel(change));
         }
-      });
+      }));
 
       return this.changes;
     }

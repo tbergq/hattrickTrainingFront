@@ -47,6 +47,8 @@ class TeamStore {
   }
 
   getTeamById(id) {
+    id = parseInt(id);
+
     let team = this.teams.find(team => {
       return team.id === id;
     });
@@ -63,6 +65,9 @@ class TeamStore {
 
     try {
       team = await Transport.call(`${url}${id}/`);
+      team = new TeamModel(team);
+      let setTeam = action((team) => this.teams.push(team));
+      setTeam(team);
       return team;
     }
     catch (err) {
@@ -76,7 +81,7 @@ class TeamStore {
   async fetchTeams() {
     try {
       let serverTeams = await Transport.call(url);
-      serverTeams.forEach(team => {
+      serverTeams.forEach(action(team => {
         let existingTeam = this.getTeamById(team.id);
 
         if (existingTeam) {
@@ -85,7 +90,7 @@ class TeamStore {
         else {
           this.teams.push(new TeamModel(team));
         }
-      });
+      }));
       return this.teams;
     }
     catch (err) {

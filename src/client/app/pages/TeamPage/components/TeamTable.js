@@ -41,6 +41,7 @@ class TeamTable extends React.Component {
     this.showEditTeam      = this.showEditTeam.bind(this);
   }
 
+  @action
   componentWillMount() {
     this.showModal   = false;
     this.modalTitle  = '';

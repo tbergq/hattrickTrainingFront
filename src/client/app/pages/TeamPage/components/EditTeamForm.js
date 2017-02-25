@@ -29,6 +29,7 @@ class EditTeamForm extends React.Component {
     this.submitTeam = this.submitTeam.bind(this);
   }
 
+  @action
   componentWillMount() {
     if (this.props.team) {
       this.team_name = this.props.team.team_name;

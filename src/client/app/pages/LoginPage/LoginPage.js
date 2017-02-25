@@ -43,6 +43,7 @@ class LoginPage extends React.Component {
     this.login = this.login.bind(this);
   }
 
+  @action
   componentWillMount() {
     if (this.props.location.query.logout && this.props.location.query.logout === 'true') {
       UserStore.clearToken();

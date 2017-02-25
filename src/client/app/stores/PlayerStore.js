@@ -31,7 +31,8 @@ class PlayerStore {
         body: player
       });
 
-      this.players.push(new PlayerModel(response));
+      let setPlayer = action(player => {this.players.push(player)});
+      setPlayer(new PlayerModel(response));
       return response;
     }
     catch (err) {
@@ -52,7 +53,8 @@ class PlayerStore {
     try {
       player          = await Transport.call(`${url}${teamId}/players/${playerId}/`);
       let playerModel = new PlayerModel(player);
-      this.players.push(playerModel);
+      let setPlayer = action(player => {this.players.push(player)});
+      setPlayer(playerModel);
       return playerModel;
     }
     catch (err) {
@@ -67,7 +69,7 @@ class PlayerStore {
     try {
       let players = await Transport.call(`${url}${teamId}/players/`);
 
-      players.forEach(player => {
+      players.forEach(action(player => {
         let existingPlayer = this._getPlayerById(player.id);
 
         if (existingPlayer) {
@@ -76,7 +78,7 @@ class PlayerStore {
         else {
           this.players.push(new PlayerModel(player));
         }
-      });
+      }));
       return this.players;
     }
     catch (err) {

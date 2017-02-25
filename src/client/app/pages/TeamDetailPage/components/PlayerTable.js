@@ -29,6 +29,7 @@ class PlayerTable extends React.Component {
     this.sort          = this.sort.bind(this);
   }
 
+  @action
   async componentWillMount() {
     this.showModal = false;
     await PlayerStore.fetchPlayers(this.props.team.id);
