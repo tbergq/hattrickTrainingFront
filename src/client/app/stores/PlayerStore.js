@@ -42,6 +42,26 @@ class PlayerStore {
     }
   }
 
+  async deletePlayer(teamId, playerId) {
+    try {
+      await Transport.call(`${url}${teamId}/players/${playerId}/`, {
+        method: 'DELETE'
+      });
+
+      let index = this.players.findIndex(player => {
+        return player.id === parseInt(playerId);
+      });
+
+      let removePlayer = action(() => {this.players.splice(index, 1)});
+      removePlayer();
+    }
+    catch (err) {
+      ToastStore.addToastMessage('Failed to delete player');
+      console.log(err);
+      throw err;
+    }
+  }
+
   @action
   async getPlayer(teamId, playerId) {
     let player = this._getPlayerById(playerId);

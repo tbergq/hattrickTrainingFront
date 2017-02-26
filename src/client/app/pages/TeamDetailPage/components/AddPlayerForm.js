@@ -40,6 +40,7 @@ class AddPlayerForm extends React.Component {
 
     this.handleChange = this.handleChange.bind(this);
     this.createPlayer = this.createPlayer.bind(this);
+    this.resetValues  = this.resetValues.bind(this);
   }
 
   @action
@@ -64,6 +65,7 @@ class AddPlayerForm extends React.Component {
       });
 
       ToastStore.addToastMessage(`Successfully added ${this.name}`);
+      this.resetValues();
     }
     catch (err) {
 
@@ -76,6 +78,27 @@ class AddPlayerForm extends React.Component {
   handleChange(e) {
     this[e.target.name] = e.target.value;
     this.validateElement(e.target.name);
+  }
+
+  @action
+  resetValues() {
+    this.name            = '';
+    this.team            = '';
+    this.keeper          = '';
+    this.defending       = '';
+    this.playmaking      = '';
+    this.winger          = '';
+    this.passing         = '';
+    this.scoring         = '';
+    this.set_pieces      = '';
+    this.nameValid       = null;
+    this.keeperValid     = null;
+    this.defendingValid  = null;
+    this.playmakingValid = null;
+    this.wingerValid     = null;
+    this.passingValid    = null;
+    this.scoringValid    = null;
+    this.set_piecesValid = null;
   }
 
   validateForm() {

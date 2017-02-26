@@ -5,11 +5,15 @@ import {
   Table,
   Button
 } from 'react-bootstrap'
-import {PlayerStore} from '../../../stores';
+import {
+  PlayerStore,
+  ToastStore
+} from '../../../stores';
 import {MyModal} from '../../../components';
 import {
   PlayerItemRow,
-  AddPlayerForm
+  AddPlayerForm,
+  DeleteWarningFooter
 } from './';
 
 @observer
@@ -24,15 +28,24 @@ class PlayerTable extends React.Component {
   constructor(props) {
     super(props);
 
-    this.showAddPlayer = this.showAddPlayer.bind(this);
-    this.toggleModal   = this.toggleModal.bind(this);
-    this.sort          = this.sort.bind(this);
+    this.showAddPlayer   = this.showAddPlayer.bind(this);
+    this.toggleModal     = this.toggleModal.bind(this);
+    this.sort            = this.sort.bind(this);
+    this.showDeleteModal = this.showDeleteModal.bind(this);
+    this.deletePlayer    = this.deletePlayer.bind(this);
   }
 
   @action
   async componentWillMount() {
     this.showModal = false;
     await PlayerStore.fetchPlayers(this.props.team.id);
+  }
+
+
+  async deletePlayer(player) {
+    await PlayerStore.deletePlayer(this.props.team.id, player.id);
+    ToastStore.addToastMessage(`${player.name} was deleted`);
+    this.toggleModal();
   }
 
   @action
@@ -44,11 +57,20 @@ class PlayerTable extends React.Component {
   }
 
   @action
+  showDeleteModal(player) {
+    this.title  = 'Confirm delete';
+    this.body   = `Are you sure you want to delete ${player.name}?`;
+    this.footer = <DeleteWarningFooter cancel={action(this.toggleModal)} deletePlayer={action(() => this.deletePlayer(player))}/>;
+
+    this.toggleModal();
+  }
+
+  @action
   sort(column) {
     let ascending = false;
 
     if (column === this.currentSortColum) {
-      ascending = true;
+      ascending             = true;
       this.currentSortColum = `-${column}}`;
     }
     else {
@@ -71,7 +93,7 @@ class PlayerTable extends React.Component {
         <Table responsive striped bordered>
           <thead>
           <tr>
-            <th colSpan="8">
+            <th colSpan="9">
               <Button
                 bsStyle="success"
                 onClick={this.showAddPlayer}
@@ -89,13 +111,18 @@ class PlayerTable extends React.Component {
             <th className="sortable-header" onClick={() => this.sort('passing')}>Passing</th>
             <th className="sortable-header" onClick={() => this.sort('scoring')}>Scoring</th>
             <th className="sortable-header" onClick={() => this.sort('set_pieces')}>Set pieces</th>
+            <th>Actions</th>
           </tr>
           </thead>
           <tbody>
 
           {players.map(player => {
             return (
-              <PlayerItemRow player={player} key={player.id}/>
+              <PlayerItemRow
+                player={player}
+                key={player.id}
+                deleteCallback={action(this.showDeleteModal)}
+              />
             )
           })}
           </tbody>
