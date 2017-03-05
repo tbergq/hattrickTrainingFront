@@ -5,7 +5,8 @@ import {
   LoginPage,
   TeamPage,
   TeamDetailPage,
-  PlayerDetailPage
+  PlayerDetailPage,
+  ChangesPage
 } from '../pages';
 
 class Routes extends Component {
@@ -18,6 +19,7 @@ class Routes extends Component {
           <IndexRoute component={TeamPage}/>
           <Route path="team/:id" component={TeamDetailPage}/>
           <Route path="player/:teamId/:playerId" component={PlayerDetailPage}/>
+          <Route path="changes" component={ChangesPage} />
         </Route>
       </Router>
     )

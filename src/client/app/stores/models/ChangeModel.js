@@ -17,6 +17,11 @@ class ChangeModel {
     this.setValue(change);
   }
 
+  @computed
+  get date() {
+    return moment(this.change_date).format('L');
+  }
+
   @action
   setValue(change) {
     for (let key in change) {

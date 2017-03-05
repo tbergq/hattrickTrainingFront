@@ -24,7 +24,7 @@ class Header extends React.Component {
       <Navbar collapseOnSelect>
         <Navbar.Header>
           <Navbar.Brand>
-            <Link to="home">
+            <Link to="/home">
               Hattrick training assistant
             </Link>
           </Navbar.Brand>
@@ -34,6 +34,9 @@ class Header extends React.Component {
           <Nav>
             <LinkContainer to={{pathname: '/home'}}>
               <NavItem eventKey={1}>Teams</NavItem>
+            </LinkContainer>
+            <LinkContainer to={{pathname: '/home/changes'}}>
+              <NavItem eventKey={2}>Changes</NavItem>
             </LinkContainer>
             <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown" style={{display: 'none'}}>
               <MenuItem eventKey={3.1}>Action</MenuItem>
