@@ -8,21 +8,25 @@ const url = 'api/teams/';
 class TeamChangeStore {
 
   @observable changes = [];
+  @observable next;
+  @observable previous;
+  @observable totalCount;
+  limit = 10;
 
-  @action
-  addChange(change) {
-    this.changes.push(new TeamChangeModel(change));
+  constructor() {
+    this.totalCount = 0;
+    this.next = null;
+    this.previous = null;
   }
 
-  async fetchTeamChanges(id) {
-    this.resetChanges();
-
+  async _fetchByUrl(url) {
     try {
-      let changes = await Transport.call(`${url}${id}/changes/`);
+      let response = await Transport.call(url);
+      let changes = response.results;
 
-      changes.forEach(change => {
-        this.addChange(change);
-      });
+      this.addChanges(changes);
+      this.setPaginationData(response);
+      return this.changes;
     }
     catch (err) {
       ToastStore.addToastMessage('Failed to fetch changes for team');
@@ -32,8 +36,45 @@ class TeamChangeStore {
   }
 
   @action
+  addChange(change) {
+    this.changes.push(new TeamChangeModel(change));
+  }
+
+  addChanges(changes) {
+    changes.forEach(change => {
+      this.addChange(change);
+    });
+  }
+
+  async fetchNext() {
+    this.resetChanges();
+    await this._fetchByUrl(this.next);
+    return this.changes;
+  }
+
+  async fetchPrevious() {
+    this.resetChanges();
+    await this._fetchByUrl(this.previous);
+    return this.changes;
+  }
+
+  async fetchTeamChanges(id) {
+    this.resetChanges();
+    await this._fetchByUrl(`${url}${id}/changes/?limit=${this.limit}`);
+    return this.changes;
+  }
+
+  @action
   resetChanges() {
     this.changes = [];
+  }
+
+  @action
+  setPaginationData(data) {
+    this.next = data.next ? data.next.split('/').slice(3).join('/') : null;
+    this.previous = data.previous ? data.previous.split('/').slice(3).join('/') : null;
+
+    this.totalCount = data.count;
   }
 }
 
