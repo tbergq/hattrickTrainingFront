@@ -7,7 +7,8 @@ import {
 } from '../../stores';
 import {
   Table,
-  Glyphicon
+  Glyphicon,
+  Button
 } from 'react-bootstrap'
 import styles from './ChangesPage.scss';
 
@@ -79,7 +80,7 @@ class ChangesPage extends React.Component {
                       <Glyphicon glyph="arrow-down" style={{color: '#d9534f'}}/>
                     }
                   </div>
-                  </td>
+                </td>
                 <td>{change.old_value}</td>
                 <td>{change.new_value}</td>
                 <td>{change.date}</td>
@@ -87,6 +88,27 @@ class ChangesPage extends React.Component {
             )
           })}
           </tbody>
+          <tfoot>
+          <tr>
+            <td colSpan="5">
+              <div className="pull-left">
+                <Button
+                  onClick={() => TeamChangeStore.fetchPrevious()}
+                  disabled={!TeamChangeStore.previous}
+                >
+                  <Glyphicon glyph="chevron-left"/>
+                </Button>
+                <Button
+                  onClick={() => TeamChangeStore.fetchNext()}
+                  disabled={!TeamChangeStore.next}
+                >
+                  <Glyphicon glyph="chevron-right"/>
+                </Button>
+              </div>
+              <div className="pull-right">Count: {TeamChangeStore.totalCount}</div>
+            </td>
+          </tr>
+          </tfoot>
         </Table>
       </div>
     )
